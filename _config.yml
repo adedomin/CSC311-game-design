@@ -13,4 +13,4 @@ github_username: adedomin
 markdown: kramdown
 
 # excludes main site config
-exclude: ["_dedominic.pw-conf.yml", "new_post.sh"]
+exclude: ["_dedominic.pw-conf.yml", "new-post.sh"]
