@@ -4,8 +4,8 @@ name: "Anthony DeDominic"
 email: anthony@dedominic.pw
 description: > # this means to ignore newlines until "baseurl:"
     Blog about development of school project for CSC 311
-baseurl: "/CSC311-game-design" # the subpath of your site, e.g. /blog/
-url: "https://adedomin.github.io" # the base hostname & protocol for your site
+baseurl: "/csc-311" # the subpath of your site, e.g. /blog/
+url: "https://dedominic.pw" # the base hostname & protocol for your site
 #twitter_username: jekyllrb
 github_username: adedomin
 
@@ -13,4 +13,4 @@ github_username: adedomin
 markdown: kramdown
 
 # excludes main site config
-exclude: ["_dedominic.pw-conf.yml", "new_post.sh"]
+exclude: _dedominic.pw-conf.yml

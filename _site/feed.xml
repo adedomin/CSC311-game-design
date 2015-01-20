@@ -4,10 +4,10 @@
     <title>CSC 311 Project Blog</title>
     <description>Blog about development of school project for CSC 311
 </description>
-    <link>https://dedominic.pw/csc-311/</link>
-    <atom:link href="https://dedominic.pw/csc-311/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 17 Jan 2015 19:14:23 -0500</pubDate>
-    <lastBuildDate>Sat, 17 Jan 2015 19:14:23 -0500</lastBuildDate>
+    <link>https://adedomin.github.io/CSC311-game-design/</link>
+    <atom:link href="https://adedomin.github.io/CSC311-game-design/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Mon, 19 Jan 2015 21:17:35 -0500</pubDate>
+    <lastBuildDate>Mon, 19 Jan 2015 21:17:35 -0500</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -151,8 +151,8 @@ sudo chown ec2-webserver:ec2-webserver /home/ec2-webserver/*&lt;/code&gt;&lt;/pr
 Check back later&lt;/p&gt;
 </description>
         <pubDate>Sat, 17 Jan 2015 14:00:01 -0500</pubDate>
-        <link>https://dedominic.pw/csc-311/2015/01/17/configuring-the-aws-ec2-instance.html</link>
-        <guid isPermaLink="true">https://dedominic.pw/csc-311/2015/01/17/configuring-the-aws-ec2-instance.html</guid>
+        <link>https://adedomin.github.io/CSC311-game-design/2015/01/17/configuring-the-aws-ec2-instance.html</link>
+        <guid isPermaLink="true">https://adedomin.github.io/CSC311-game-design/2015/01/17/configuring-the-aws-ec2-instance.html</guid>
         
         
       </item>
@@ -221,8 +221,8 @@ Check back later&lt;/p&gt;
 &lt;p&gt;Also, make sure you are logging in as ubuntu, not root.&lt;/p&gt;
 </description>
         <pubDate>Thu, 15 Jan 2015 11:40:01 -0500</pubDate>
-        <link>https://dedominic.pw/csc-311/2015/01/15/Setting-up-an-AWS-ec2-instance.html</link>
-        <guid isPermaLink="true">https://dedominic.pw/csc-311/2015/01/15/Setting-up-an-AWS-ec2-instance.html</guid>
+        <link>https://adedomin.github.io/CSC311-game-design/2015/01/15/Setting-up-an-AWS-ec2-instance.html</link>
+        <guid isPermaLink="true">https://adedomin.github.io/CSC311-game-design/2015/01/15/Setting-up-an-AWS-ec2-instance.html</guid>
         
         
       </item>
