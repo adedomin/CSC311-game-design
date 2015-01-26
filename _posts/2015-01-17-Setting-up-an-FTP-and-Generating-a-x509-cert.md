@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Configuring the AWS EC2 Server"
+title:  Setting up a an FTP and Generating A SSL Certificate
 date:   2015-01-17 19:00:01
 ---
 
@@ -161,9 +161,3 @@ Also, Windows explorer's built in ftp client doesn't support ftp with ssl, so yo
 Since filezilla is on sourceforge, and I'm using windows (purely for the benefit of other windows users who may need help, since I can't stand windows myself), I'd have to download some malware downloader thing that can load god knows what binaries on my machine; to avoid this, I recommend [chocolatey](https://chocolatey.org) which will allow you to type choco install filezilla without worrying about the malware garbage sourceforge tries to push on windows users.
 
 If you are following along and can't login to your ftp, try setting your pam_service_name=ftp. That fixed my login issues.
-
-Setting up the Webserver
-------------------------
-
-Coming soon
-Check back later
