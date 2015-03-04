@@ -33,7 +33,7 @@ then register it mSensorManager.registerListener(this, mSensorManager.getDefault
 
 ### getting sensor events in activity
 
-to get events, the activity has to extent SensorEventListener and @Override and implement onSensorChanged(SensorEvent event)
+to get events, the activity has to implement SensorEventListener and @Override and implement onSensorChanged(SensorEvent event)
 
 Bluetooth - Networking
 ======================
@@ -49,22 +49,23 @@ With that out of the way, there are two key things to do to connect two devices.
 
 In order for a connect to even start, one of the devices has to be listening for connections
 
-The listener must open whats called a server socket which waits for connections, because opening and listening on such a socket is blocking IO, one must spin it off in it's own thread.
+The listener must open whats called a server socket which waits for connections, because opening and listening on such a socket is blocking IO, one must spin it off in its own thread. See BluetoothChatService.java from BluetoothChat for a code example of a listening thread
 
-when the socket.accept() call suceeds it returns a connection socket; if it fails, it will throw an IOError exception.
+When the socket.accept() call succeeds it returns a connection socket; if it fails, it will throw an IOError exception.
 
 ### Connecting
 
 To connect, one needs the MAC ADDRESS of the host
-Using a BluetoothAdapter object can give the user the ability to interface with the radio and give the user the ability to get a list of all paired bluetooth device.
+Using a BluetoothAdapter object can give the user the ability to interface with the radio and give the user the ability to get a list of all paired bluetooth devices and also to scan for discoverable bluetooth devices.
 
-using a simple activity, a ListView can be made with the data of all paired devices. 
+using a simple activity, a ListView can be made with the data of all paired devices. Implementing an onClick listener can allow to extract information from a list element.
 
 ### Connected
 
-Once a device connects, a socket linking the two is formed. To communicate between the two devices requires a input and output stream. Because these streams only accept and read in byte arrays, they are incredibly difficult to work with. Also note that reading and writing is a blocking IO, so make sure they are contained in separate threads.
+Once a device connects, a socket linking the two is formed. To communicate between the two devices requires a input and output stream. Because these streams only accept and read in byte arrays, they are incredibly difficult to work with. Also note that reading and writing is blocking IO, so make sure they are contained in separate threads.
 
-To make sending data easier, one can take these streams and create DataStream objects. DataStreams are more robust in that a user can write and read more than just byte arrays. The constructor for these objects take streams for arguments.
+To make sending data easier, one can take these streams and create DataStream objects. DataStreams are more robust in that a user can write and read more than just byte arrays. The constructor for these objects take streams for arguments.Note that a scoket has a method for getting these raw streams.
+
 
 Handling IO requests with handlers
 ===================================
@@ -75,13 +76,15 @@ Now with a socket open, it's time to discuss how to use it to actually play a ga
 
 A handler is an object which processes messages that it may receive, they do not block since they are threaded.
 
-A handler can also be used to facilitate communication between two different programs or threads.
+A handler can also be used to facilitate communication between two different sections of code or threads.
 
 ### Using them
 
 All handler objects must implement a handleMessage() function; this function is where messages will come in.
-Using a switch statement, one can determine what type of message it is and what the message should do.
+Using a switch statement, one can determine what type of message (Message.what) it is and what the message should do.
 
-by doing this, it makes it easier to handle messages of different varieties.
+By doing this, it makes it easier to handle messages of different varieties.
 
+To send messages, simply call the .obtainMessage method and for a parameter indicate the message type (Ideally your message types are enumerated globals). the obtain message can also take generic objects to carry. Once constructed, use the sentToTarget() method to send it to handleMessage(Message msg).
 
+Now simply give your connection threads this handler object and they can communicate to your game activity.
