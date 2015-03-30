@@ -6,7 +6,7 @@ date:   2015-01-17 19:00:01
 
 Now with my AWS instance up, it's time to make it into a webserver. For the sake of the assignment, I'll go through the steps of how I will do this and also explain some basic Unix-like commands and utilities to accomplish this goal.
 
-Sending files to The Server
+Sending files to the Server
 ---------------------------
 
 There are pretty much two ways to accomplish this:

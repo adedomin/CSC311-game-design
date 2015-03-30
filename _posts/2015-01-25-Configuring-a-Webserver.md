@@ -11,11 +11,13 @@ date: 2015-01-25 19:45:24
 NGINX
 =====
 
-The E in LEMP stands for Nginx, a reverse proxy server that does both websites and even email.
+The E in LEMP stands for Nginx (engine x), a reverse proxy server that does both websites and even email.
 
 The major difference between Apache and Nginx is that Nginx was built from the ground up for virtual servers and concurrency.
 
 End of the day, it doesn't really matter much whether I go with Nginx or Apache.
+
+To install it, simply type apt-get install nginx.
 
 Configuring Nginx
 =================
