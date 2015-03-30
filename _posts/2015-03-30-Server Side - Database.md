@@ -43,6 +43,7 @@ PHP
 ---
 
 PHP is a server side scripting language that allows a user to give the server data to act on and to return dynamic content.
+For PHP, Ubuntu offers a package called php5-fpm which is a FastCGI binary for, obviously, PHP;
 
 ### Using PHP
 
