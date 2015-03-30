@@ -13,6 +13,32 @@ MySQL
 MySQL is a common database that can scale well with data.
 Using queries, a user can store, add, delete and organize data.
 
+## Example queries
+
+To insert data into a table:
+
+	INSERT INTO location (user, latitude, longitude) VALUES("John Doe", 41.75, 72.45);
+
+INSERT is the keyword to insert data INTO a table.
+INTO indicates which table to insert into.
+The values in the parantheses describes which columns the following values go with. If blank, MySQL will insert values in order from first column to last column.
+VALUES indicates what is being inserted.
+
+Search a table with a conditional:
+
+	SELECT user FROM location WHERE user = "John Doe";
+
+SELECT means to show data, the variabled following that term will ask which columns in the table to fetch.
+FROM and the following variable indicates which table to do this query on.
+WHERE means the next statement is a conditional; in the example, I only want to fetch data which has user equal John Doe.
+
+Delete Values from table:
+
+	DELETE FROM location WHERE user = "John Doe";
+
+This query can be dangerous, so it's good to make backups regularly to reverse any damage this may cause.
+This one is similar to SELECT, major difference being that this query deletes the values it matches instead of showing them.
+
 PHP
 ---
 
