@@ -13,16 +13,17 @@ MainMenuActivity
 
 Basically all MainMenuActivity does is draw buttons and waits for the user to tap one.
 
-	It implements an onClick event handler that waits for a screen tap to land on registered views (the buttons).
+It implements an onClick event handler that waits for a screen tap to land on registered views (the buttons).
 When such a tap occurs, the program sends a view object that includes the information about the clicked button (including the ID) to onClick(View view)
-	All onClick's logic does is figure out what button was pressed and how to proceed.  
+All onClick's logic does is figure out what button was pressed and how to proceed.  
+
 ### Decision
 
-	At this point there are only two relevant buttons the user could click on.
-	If the user clicked on the listen button, then main menu calls the game activity.
+At this point there are only two relevant buttons the user could click on.
+If the user clicked on the listen button, then main menu calls the game activity.
 
-	To tell the game activity what it should do once launched, the intent that calls the gmae activity should include a constant value.
-	In the case of listening it's Constants.LISTEN_FOR_CONNECT.
+To tell the game activity what it should do once launched, the intent that calls the gmae activity should include a constant value.
+In the case of listening it's Constants.LISTEN\_FOR\_CONNECT.
 
 If the user clicked the connect to button, then it gets slightly more complex.
 
@@ -124,4 +125,17 @@ WHen the accelerometer changes it calls onSensorChanged(SensorEvent)
 
 In this function, I only need the rotation around the y axis which is the first value in the sensor event object.
 
+PongView
+========
 
+This portion of the game is basically all the activity the user sees.
+
+It includes classes to describe the game pieces, ball and paddles and it's own Handler.
+
+### DrawHandler
+
+the draw handler is basically a thread that messages itself at a fixed rate. On messaging it invalidates the view which causes the program to redraw the field with new data and to call a function to update the data.
+
+### Game Logic - update()
+
+In the update thread, there are a few conditionals before the game starts playing, these conditionals are in place because a new view has no clue how big it is (getWidth() and getHeight() will return 0) until it starts rendering, the first few conditionals are in place to do blank draw runs to get the globals initialized before gameplay starts due to this strange limitation.
