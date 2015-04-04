@@ -53,3 +53,12 @@ rssi can be collected by ScanResult.getRssi(); this is useful for deriving range
 d = 10 ^ ((TxPower - RSSI) / (10 * n))
 
 where d = distance, A = txPower, n = signal propagation constant and [RSSI] = dBm.
+
+### Triangulation
+
+To triangulate, there needs to be at least 3 beacons that know where they are located.
+From the beacon out to the phone is a radius in a circle drawn around the beacons;
+this distance is found in the above equation.
+Using the circle formula: 
+	(x - latitude)^2 + (y - longitude)^2 = radius^2
+with these equations for each circle, you can find point of intersection by solving the system of equations.
