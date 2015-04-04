@@ -35,13 +35,21 @@ How it Works - The Protocol
 The receiving device passively listens for these signals and then measures RSSI (received signal strength indicator).
 If the RSSI exceeds a certain threshold, the device assumes it's right on top of the beacon. 
 
-programmatically, to start scanning for Bluetooth Low Energy, you need the BluetoothLeScanner object which is returned by BluetoothAdapter.getLeScanner
+### Programmatic
 
-this allows performing scanning.
+programmatically, to start scanning for Bluetooth Low Energy, you need the BluetoothLeScanner object which is returned by BluetoothAdapter.getLeScanner()
 
-when running startScan(); the function will create an event that is handled by an anonymous ScanCallback class or an ScanCallback extended class.
+This allows performing scanning.
+
+When running startScan(); the function will create an event that is handled by an anonymous ScanCallback class or an ScanCallback extended class.
 The extended class must implement onScanResult();
 
 For URI beacons, there is a UriBeacon object that takes a byte array which can be taken from ScanResult.getScanRecord().getBytes()
 
 rssi can be collected by ScanResult.getRssi(); this is useful for deriving range measurements
+
+### calculate distance
+
+d = 10 ^ ((TxPower - RSSI) / (10 * n))
+
+where d = distance, A = txPower, n = signal propagation constant and [RSSI] = dBm.
