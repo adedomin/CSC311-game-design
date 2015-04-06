@@ -32,8 +32,8 @@ They can also hold data so when another activity finishes, it can return some va
 
 ### [calling an activity](https://developer.android.com/reference/android/content/Context.html#startActivity(android.content.Intent\))
 
-simply create a new Intent object with the arguments linking to the current activity (this) and the class file of the activity you want to call.
-then just call startActivity with the intent as the parameter.
+Simply create a new Intent object with the arguments linking to the current activity (this) and the class file of the activity you want to call.
+Then just call startActivity with the intent as the parameter.
 
 	Intent intent = new Intent(this, OtherActivity.class);
 	startActivity(intent);
@@ -41,20 +41,20 @@ then just call startActivity with the intent as the parameter.
 ### [returning values](https://developer.android.com/reference/android/app/Activity.html#startActivityForResult(android.content.Intent,%20int\))
 To return a value back on activity finish(); the activity has to add a key: value pair to the intent.
 
-before that can be done though, the activity has to be called using
+Before that can be done though, the activity has to be called using
 	
 	startActivityForResult(intent, CONTEXT);
 
-the context is an int that describes what the called activity should do and return;
-in the other actvity, to return something, create a new intent
+The context is an int that describes what the called activity should do and return;
+in the other activity, to return something, create a new intent
 
 	Intent intent = new Intent();
 
-then use the .putExtra method to append a key : value pair
+Then use the .putExtra method to append a key : value pair
 
 	intent.putExtra(KEY, VALUE);
 
-[seting the result](https://developer.android.com/reference/android/app/Activity.html#setResult(int,%20android.content.Intent\)) could be helpful to handle failures or successes this is done with setResult
+[setting the result](https://developer.android.com/reference/android/app/Activity.html#setResult(int,%20android.content.Intent\)) could be helpful to handle failures or successes this is done with setResult
 
 	setResult(Activity.RESULT_OK, INTENT_TO_RETURN);
 	// then finish

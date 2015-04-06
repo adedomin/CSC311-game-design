@@ -22,7 +22,7 @@ All onClick's logic does is figure out what button was pressed and how to procee
 At this point there are only two relevant buttons the user could click on.
 If the user clicked on the listen button, then main menu calls the game activity.
 
-To tell the game activity what it should do once launched, the intent that calls the gmae activity should include a constant value.
+To tell the game activity what it should do once launched, the intent that calls the game activity should include a constant value.
 In the case of listening it's Constants.LISTEN\_FOR\_CONNECT.
 
 If the user clicked the connect to button, then it gets slightly more complex.
@@ -30,12 +30,12 @@ If the user clicked the connect to button, then it gets slightly more complex.
 It has to launch a different activity BtConnectActivity to collect the server's mac address.
 
 Once that activity finishes, an event occurs that gets handled by onActivityResult(int, int, Intent).
-Like the listen button, this function ultimately calls the GameActivity, the key differenece is it also includes an extra with the MAC Address.
+Like the listen button, this function ultimately calls the GameActivity, the key difference is it also includes an extra with the MAC Address.
 
 BtConnectActivity
 =================
 
-Simple activity that spawns a list of paired bt devices. onClickListener is registered for all list objects. Clicking a list object will cause the activity  
+Simple activity that spawns a list of paired bluetooth devices. onClickListener is registered for all list objects. Clicking a list object will cause the activity  
 
 BluetoothService
 ================
@@ -59,9 +59,9 @@ This thread simply spawns a server socket waiting for a connection.
 
 This needs its own thread since .accept() method is blocking IO.
 
-when it connects and doesn't error, it spawns a regular socket which is used to communicate between the two machines.
+When it connects and doesn't error, it spawns a regular socket which is used to communicate between the two machines.
 
-this socket is used in a new thread of type ConnectedThread()
+This socket is used in a new thread of type ConnectedThread()
 
 ### Threads -- JoinThread
 
@@ -121,7 +121,7 @@ the read in data is then sent to the proper setters in the PongView
 The sensor is pretty simple.
 
 registerSensorListener() basically makes the program listen to the accelerometer.
-WHen the accelerometer changes it calls onSensorChanged(SensorEvent)
+When the accelerometer changes it calls onSensorChanged(SensorEvent)
 
 In this function, I only need the rotation around the y axis which is the first value in the sensor event object.
 
@@ -134,7 +134,7 @@ It includes classes to describe the game pieces, ball and paddles and it's own H
 
 ### DrawHandler
 
-the draw handler is basically a thread that messages itself at a fixed rate. On messaging it invalidates the view which causes the program to redraw the field with new data and to call a function to update the data.
+The draw handler is basically a thread that messages itself at a fixed rate. On messaging it invalidates the view which causes the program to redraw the field with new data and to call a function to update the data.
 
 ### Game Logic - update()
 

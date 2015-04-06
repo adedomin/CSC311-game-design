@@ -21,14 +21,14 @@ To [insert](https://dev.mysql.com/doc/refman/5.0/en/insert.html) data into a tab
 
 INSERT is the keyword to insert data INTO a table.
 INTO indicates which table to insert into.
-The values in the parantheses describes which columns the following values go with. If blank, MySQL will insert values in order from first column to last column.
+The values in the parentheses describes which columns the following values go with. If blank, MySQL will insert values in order from first column to last column.
 VALUES indicates what is being inserted.
 
 [Search](https://dev.mysql.com/doc/refman/5.0/en/select.html) a table with a conditional:
 
 	SELECT user FROM location WHERE user = "John Doe";
 
-SELECT means to show data, the variabled following that term will ask which columns in the table to fetch.
+SELECT means to show data, the variables following that term will ask which columns in the table to fetch.
 FROM and the following variable indicates which table to do this query on.
 WHERE means the next statement is a conditional; in the example, I only want to fetch data which has user equal John Doe.
 
@@ -56,7 +56,7 @@ For PHP, Ubuntu offers a package called php5-fpm which is a FastCGI binary for, 
 In order to use PHP on a webserver, it's required to have some type of common gateway interface, [cgi](https://en.wikipedia.org/wiki/Common_Gateway_Interface).
 Once a cgi is installed, such as fastcgi, you may need to configure your webserver to use it.
 
-in [nginx](https://askubuntu.com/questions/134666/what-is-the-easiest-way-to-enable-php-on-nginx) adding this should be sufficent 
+In [nginx](https://askubuntu.com/questions/134666/what-is-the-easiest-way-to-enable-php-on-nginx) adding this should be sufficent 
 
 	location ~ \.php$
 	{
@@ -75,19 +75,19 @@ In PHP there are two major ["superglobals"](https://php.net/manual/en/language.v
 These are also the two major HTTP methods.
 POST is the most robust in terms of how much data it can take but can add complexity for simple data communications.
 
-[GET](https://php.net/manual/en/reserved.variables.get.php) on the other hand allows a user to simply insert the data at the end of the URL. everything following a ? will be treated as data to be processed and an & seperated entries. the actual data is specified by a variable and a value like somevar=value
+[GET](https://php.net/manual/en/reserved.variables.get.php) on the other hand allows a user to simply insert the data at the end of the URL. Everything following a ? will be treated as data to be processed and an & seperated entries. The actual data is specified by a variable and a value like somevar=value
 
 An example:
 
 	example.com/somefile.php?user=johndoe&value=25
 
-for the simplicity, GET is probably easer to work with and more useful for the game project.
+For the simplicity, GET is probably easer to work with and more useful for the game project.
 
 ### Getting Data From GET
 
 Using htmlspecialchars() in PHP 4 or 5 can take the \_GET superglobal and a variable name (enclosed in brackets) to derive a string.
 
-example, if a user has put user=something:
+Example, if a user has put user=something:
 
 	$user = htmlspecialchars($_GET["user"]);
 
