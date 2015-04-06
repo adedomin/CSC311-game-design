@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Setting up a an FTP and Generating A SSL Certificate
+title:  Setting up an FTP and Generating A SSL Certificate
 date:   2015-01-17 19:00:01
 ---
 
@@ -11,8 +11,8 @@ Sending files to the Server
 
 There are pretty much two ways to accomplish this:
 
-	1. I could use scp since I have access to my server through ssh.
-	2. Set up an FTP server and use an FTP client to transfer files to it
+ 1. I could use scp since I have access to my server through ssh.
+ 2. Set up an FTP server and use an FTP client to transfer files to it
 
 Because I know nothing of window's terminal nor care to set up cygwin, I'm not going to bother using scp. So for this task, I will set up an FTP service on my AWS server.
 
@@ -42,9 +42,9 @@ Brief Detour - Generating a TLS (SSL) Certificate
 
 With a TLS certificate, people can't snoop on what I'm uploading to my server; by default vsftpd is set to use the "snakeoil" cert which is useless.
 
-First, I must generate an RSA key. to do this, I will switch to the root user and do this in the root user's home directory; that way no other user can read the generated private key.
+First, I must generate an RSA key. To do this, I will switch to the root user and do this in the root user's home directory; that way no other user can read the generated private key.
 
-to switch to the root user and the root user's home directory, I run:
+To switch to the root user and the root user's home directory, I run:
 
 {% highlight bash %}
 sudo su
@@ -88,8 +88,8 @@ Success, now I have a private key and a self signed cert, all that's needed for 
 
 Now I'll move the keys to the more appropriate locations:
 
-	* /etc/ssl/private/
-	* /etc/ssl/certs/
+ 1. /etc/ssl/private/
+ 2. /etc/ssl/certs/
 
 {% highlight bash %}
 mv private/key.pem /etc/ssl/private/my-key.pem
@@ -101,7 +101,7 @@ Now type exit to log out of the root user and back to the ubuntu user.
 Returning to FTP
 ================
 
-I open up the vsftpd.conf file again, /etc/vsftpd.conf, with vim. I navigate to the bottom of the config file and I set rsa_cert_file and rsa_private_key_file equal to my self signed cert and private key location.
+I open up the vsftpd.conf file again, /etc/vsftpd.conf, with vim. I navigate to the bottom of the config file and I set rsa\_cert\_file and rsa\_private\_key\_file equal to my self signed cert and private key location.
 
 To force tls, I added the following to my config file.
 {% highlight bash %}
@@ -161,3 +161,5 @@ Also, Windows explorer's built in ftp client doesn't support ftp with ssl, so yo
 Since filezilla is on sourceforge, and I'm using windows (purely for the benefit of other windows users who may need help, since I can't stand windows myself), I'd have to download some malware downloader thing that can load god knows what binaries on my machine; to avoid this, I recommend [chocolatey](https://chocolatey.org) which will allow you to type choco install filezilla without worrying about the malware garbage sourceforge tries to push on windows users.
 
 If you are following along and can't login to your ftp, try setting your pam_service_name=ftp. That fixed my login issues.
+
+for further reading on other server configurations, see [Ubuntu's Server Guide](https://help.ubuntu.com/14.04/serverguide/index.html)

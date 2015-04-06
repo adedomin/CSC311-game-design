@@ -16,9 +16,9 @@ If you use windows, which is this guide's primary target, you need the following
 
 Needed:
 
-	* PuTTY
-	* PuTTYgen
-	* An Amazon free-tier AWS account
+ * PuTTY
+ * PuTTYgen
+ * An Amazon free-tier AWS account
 
 Generating your RSA key
 =======================
@@ -55,7 +55,7 @@ Accessing your Server
 
 If you used the Ubuntu instance, then good; this part is assuming you are using the Ubuntu instance. Else consult AWS's documentation.
 
-Now open up PuTTY.exe. In the flied on the left, scroll down and expand the SSH category. Then under the SSH category, click on the Auth category. At the bottom of this configuration, it asks for your private key file (.ppk). Find your private key file.
+Now open up PuTTY.exe. In the field on the left, scroll down and expand the SSH category. Then under the SSH category, click on the Auth category. At the bottom of this configuration, it asks for your private key file (.ppk). Find your private key file.
 
 Now scroll to the top of the left field and click on session. On the Host Name (or IP) text field, you want to put your server's public IP address. To find your IP address go to your list of running EC2 Instances. At the bottom, in the description category, there should be a field indicating the server's public IP. Paste this IP in the appropriate text field in PuTTY. Before launching, I recommend saving your session settings so you don't have to do all this again.
 

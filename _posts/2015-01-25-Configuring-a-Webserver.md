@@ -11,7 +11,7 @@ date: 2015-01-25 19:45:24
 NGINX
 =====
 
-The E in LEMP stands for Nginx (engine x), a reverse proxy server that does both websites and even email.
+The E in LEMP stands for [Nginx](https://en.wikipedia.org/wiki/Nginx) (engine x), a reverse proxy server that does both websites and even email.
 
 The major difference between Apache and Nginx is that Nginx was built from the ground up for virtual servers and concurrency.
 
@@ -35,14 +35,12 @@ In the default file, make sure to set ipv6only=off; not everyone can access IPv6
 
 The root option sets the directory for which the server looks for the files to serve. For instance, if your html is located at /home/website/, set your root to this.
 
-if you want to rename the file, just use mv and specify a different filename.
+If you want to rename the file, just use mv and specify a different filename.
 	
 To enable this new server, just use the ln command to symbolically link the file to the sites-enabled directory.
 
 {% highlight bash %}
-ln -s /etc/nginx/sites-available/whatever-you-named-it /etc/nginx/sites-enabled/blah-blah-blah
+ln -s /etc/nginx/sites-available/whatever-you-named-it /etc/nginx/sites-enabled/
 {% endhighlight %}
 
-that's basically it, just restart nginx and your site should load when you nagivate to it's IP.
-
-### Next post, setting up PHP on Nginx
+That's basically it, just restart nginx and your site should load when you navigate to it's IP.
