@@ -5,9 +5,9 @@ date: 2015-04-03 15:35:36
 ---
 
 Sadly, GPS isn't always 100% practical for getting pinpoint accurate location.
-To alleviate this, most enhanced location services like google's, use nearby wireless routers to better lock down where someone is located.
+To alleviate this, most enhanced location services like google's, use nearby [wireless routers](https://support.google.com/gmm/answer/2839911?hl=en) to better lock down where someone is located.
 
-To offer an even better location service, pushes are being made in Bluetooth LE enabled devices.
+To offer an even better location service, bluetooth le becaons could be used.
 Bluetooth LE allows for things like beacons which broadcast a simple signal that carries a URI and UUID.
 These beacons can allow for better location pinpointing and also allow for more interactivity with the physical world
 
@@ -19,21 +19,16 @@ As they get closer in proximity, the game will eventually switch to a battle mod
 
 This can also help with location in general.
 bluetooth beacons could be placed in accurately measured locations and can broadcast a continuous signal.
-The strength of this signal can be used to determine proximity to said beacons.
+The strength of this signal and the beacons transmission power can be used to determine proximity to said beacons [src](https://en.wikipedia.org/wiki/Bluetooth_low_energy#Proximity_sensing).
 If enough becaons (3) are placed in range, then a fixed point can be derived using triangulation.
 
-In areas, like building where GPS may not penetrate, these bluetooth beacons can drastically improve accuracy.
-
-The old bluetooth standard is basically a serial cable emulator, basically a replacement for wires;
-Bluetooth LE is radically different, allowing for more passive communication and unreliable data in general.
-Because of this, devices can use less energy by not actively listening and maintaining a connection.
-Overall, Bluetooth LE is better geared for the internet of things and physical web.
+In areas, like building where GPS may not penetrate, these bluetooth beacons can improve accuracy or at least confirm that a client is in a building.
 
 How it Works - The Protocol
 ===========================
 
 The receiving device passively listens for these signals and then measures RSSI (received signal strength indicator).
-If the RSSI exceeds a certain threshold, the device assumes it's right on top of the beacon. 
+
 
 ### Programmatic
 
@@ -48,9 +43,14 @@ For URI beacons, there is a UriBeacon object that takes a byte array which can b
 
 rssi can be collected by ScanResult.getRssi(); this is useful for deriving range measurements
 
+Eaxample code in action can be found at: [physicalweb](https://github.com/google/physical-web/blob/master/android/PhysicalWeb/app/src/main/java/org/physical_web/physicalweb/UriBeaconDiscoveryService.java)
+
 ### calculate distance
 
-d = 10 ^ ((TxPower - RSSI) / (10 * n))
+To get a distance estimate, it's required to know the transmission power of the beacon and the received signal strength.
+This can be used to derive a equation to find the distance:
+
+[d = 10 ^ ((TxPower - RSSI) / (10 * n))](http://stackoverflow.com/questions/22784516/estimating-beacon-proximity-distance-based-on-rssi-bluetooth-le)
 
 where d = distance, A = txPower, n = signal propagation constant and [RSSI] = dBm.
 
