@@ -6,7 +6,7 @@ date: 2015-03-23 14:13:32
 
 Like all programs, they have to start somewhere
 
-For bluetooth pong 2 it's MainMenuActivity
+For [BluetoothPong2](https://github.com/adedomin/BluetoothPong2) it's MainMenuActivity
 
 MainMenuActivity
 ================
