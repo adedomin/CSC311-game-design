@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CSC 311 Project Blog</title>
+    <description>Blog about development of school project for CSC 311
+</description>
+    <link>https://dedominic.pw/csc-311/</link>
+    <atom:link href="https://dedominic.pw/csc-311/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 25 Jan 2015 22:02:10 -0500</pubDate>
+    <lastBuildDate>Sun, 25 Jan 2015 22:02:10 -0500</lastBuildDate>
+    <generator>Jekyll v2.4.0</generator>
+    
+      <item>
+        <title>Configuring a Webserver</title>
+        <description>&lt;h3 id=&quot;note-i-am-no-longer-using-aws-ec2-my-ec2-instance-is-ridiculously-slow-editing-in-vim-is-painful-and-slow-and-i-cant-imagine-working-with-this-thing-for-my-video-game-project&quot;&gt;NOTE: I AM NO LONGER USING AWS EC2. My EC2 instance is ridiculously slow. Editing in vim is painful and slow and I can’t imagine working with this thing for my video game project.&lt;/h3&gt;
+
+&lt;h3 id=&quot;all-this-means-is-that-instead-of-a-lamp-stack-this-post-will-be-about-what-i-have-on-my-current-server-a-lemp-stack&quot;&gt;All this means is that instead of a LAMP stack, this post will be about what I have on my current server, a LEMP stack.&lt;/h3&gt;
+
+&lt;h1 id=&quot;nginx&quot;&gt;NGINX&lt;/h1&gt;
+
+&lt;p&gt;The E in LEMP stands for Nginx, a reverse proxy server that does both websites and even email.&lt;/p&gt;
+
+&lt;p&gt;The major difference between Apache and Nginx is that Nginx was built from the ground up for virtual servers and concurrency.&lt;/p&gt;
+
+&lt;p&gt;End of the day, it doesn’t really matter much whether I go with Nginx or Apache.&lt;/p&gt;
+
+&lt;h1 id=&quot;configuring-nginx&quot;&gt;Configuring Nginx&lt;/h1&gt;
+
+&lt;p&gt;The main config file in nginx can be found at /etc/nginx/nginx.conf. There you’ll find a default mail and http config.&lt;/p&gt;
+
+&lt;p&gt;The default http config will be just fine, all that needs to be done is to set up a server. &lt;/p&gt;
+
+&lt;h1 id=&quot;setting-up-a-server&quot;&gt;Setting up a server&lt;/h1&gt;
+
+&lt;p&gt;To set up a server, just go to /etc/nginx/sites-available. The default file will get one started.&lt;/p&gt;
+
+&lt;p&gt;In the default file, make sure to set ipv6only=off; not everyone can access IPv6 internet yet.&lt;/p&gt;
+
+&lt;p&gt;The root option sets the directory for which the server looks for the files to serve. For instance, if your html is located at /home/website/, set your root to this.&lt;/p&gt;
+
+&lt;p&gt;if you want to rename the file, just use mv and specify a different filename.&lt;/p&gt;
+
+&lt;p&gt;To enable this new server, just use the ln command to symbolically link the file to the sites-enabled directory.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;ln -s /etc/nginx/sites-available/whatever-you-named-it /etc/nginx/sites-enabled/blah-blah-blah&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;that’s basically it, just restart nginx and your site should load when you nagivate to it’s IP.&lt;/p&gt;
+
+&lt;h3 id=&quot;next-post-setting-up-php-on-nginx&quot;&gt;Next post, setting up PHP on Nginx&lt;/h3&gt;
+</description>
+        <pubDate>Sun, 25 Jan 2015 14:45:24 -0500</pubDate>
+        <link>https://dedominic.pw/csc-311/2015/01/25/Configuring-a-Webserver.html</link>
+        <guid isPermaLink="true">https://dedominic.pw/csc-311/2015/01/25/Configuring-a-Webserver.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Setting up a an FTP and Generating A SSL Certificate</title>
+        <description>&lt;p&gt;Now with my AWS instance up, it’s time to make it into a webserver. For the sake of the assignment, I’ll go through the steps of how I will do this and also explain some basic Unix-like commands and utilities to accomplish this goal.&lt;/p&gt;
+
+&lt;h2 id=&quot;sending-files-to-the-server&quot;&gt;Sending files to The Server&lt;/h2&gt;
+
+&lt;p&gt;There are pretty much two ways to accomplish this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. I could use scp since I have access to my server through ssh.
+2. Set up an FTP server and use an FTP client to transfer files to it
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Because I know nothing of window’s terminal nor care to set up cygwin, I’m not going to bother using scp. So for this task, I will set up an FTP service on my AWS server.&lt;/p&gt;
+
+&lt;h1 id=&quot;setting-up-an-ftp-server&quot;&gt;Setting up an FTP server&lt;/h1&gt;
+
+&lt;p&gt;Ubuntu offers vsftpd as an ftp service choice, so I’ll be using that.&lt;/p&gt;
+
+&lt;p&gt;To install it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo apt-get install vsftpd&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now that it’s installed I have to configure it.&lt;/p&gt;
+
+&lt;p&gt;To configure it I’m going to use vim, I could have also used other editors like nano which some claim is easier for beginners.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo vim /etc/vsftpd.conf&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;first things first, I want to make sure anonymous login is disabled and it seems by default it is. Scrolling through the config file, I am reminded that I forgot to generate a TLS certificate, so before I go on I’m going to do that now.&lt;/p&gt;
+
+&lt;h1 id=&quot;brief-detour---generating-a-tls-ssl-certificate&quot;&gt;Brief Detour - Generating a TLS (SSL) Certificate&lt;/h1&gt;
+
+&lt;p&gt;With a TLS certificate, people can’t snoop on what I’m uploading to my server; by default vsftpd is set to use the “snakeoil” cert which is useless.&lt;/p&gt;
+
+&lt;p&gt;First, I must generate an RSA key. to do this, I will switch to the root user and do this in the root user’s home directory; that way no other user can read the generated private key.&lt;/p&gt;
+
+&lt;p&gt;to switch to the root user and the root user’s home directory, I run:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo su
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, for the sake of organization I will create a directory to house a private key and a new cert. To generate the physical key, I will use openssl.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir -m0700 private
+openssl genpkey -algorithm RSA -out private/key.pem -pkeyopt rsa_keygen_bits:4096&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now with my RSA key I can create a new self signed, TLS certificate:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;openssl req -key private/key.pem -x509 -new -out self-signed-cert.crt&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When running this command I will be prompted for more information
+I filled out the different fields as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter &lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;, the field will be left blank.
+-----
+Country Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; letter code&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;AU&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:US
+State or Province Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;full name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Some-State&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:Connecticut
+Locality Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, city&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;:Manchester
+Organization Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, company&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Internet Widgits Pty Ltd&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:CSC-311 Game Design Project
+Organizational Unit Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, section&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;:Student Developer
+Common Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;e.g. server FQDN or YOUR name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;:Anthony DeDominic
+Email Address &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;:dedominica@my.easternct.edu&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Success, now I have a private key and a self signed cert, all that’s needed for TLS connections.&lt;/p&gt;
+
+&lt;p&gt;Now I’ll move the keys to the more appropriate locations:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;* /etc/ssl/private/
+* /etc/ssl/certs/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mv private/key.pem /etc/ssl/private/my-key.pem
+mv self-signed-cert.crt /etc/ssl/certs/my-selfsigned-cert.crt&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now type exit to log out of the root user and back to the ubuntu user.&lt;/p&gt;
+
+&lt;h1 id=&quot;returning-to-ftp&quot;&gt;Returning to FTP&lt;/h1&gt;
+
+&lt;p&gt;I open up the vsftpd.conf file again, /etc/vsftpd.conf, with vim. I navigate to the bottom of the config file and I set rsa_cert_file and rsa_private_key_file equal to my self signed cert and private key location.&lt;/p&gt;
+
+&lt;p&gt;To force tls, I added the following to my config file.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;ssl_enable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;YES
+&lt;span class=&quot;nv&quot;&gt;allow_anon_ssl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NO
+&lt;span class=&quot;nv&quot;&gt;force_local_data_ssl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;YES
+
+&lt;span class=&quot;c&quot;&gt;#ssl is deprecated and unsafe&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ssl_tlsv1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;YES
+&lt;span class=&quot;nv&quot;&gt;ssl_sslv2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NO
+&lt;span class=&quot;nv&quot;&gt;ssl_sslv3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NO
+
+&lt;span class=&quot;nv&quot;&gt;require_ssl_reuse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;NO
+&lt;span class=&quot;nv&quot;&gt;ssl_ciphers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;HIGH&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Here are some other critical things I have in my config:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;write_enable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;YES
+&lt;span class=&quot;nv&quot;&gt;chroot_local_user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;YES&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After finishing configuring, I simply restart vsftpd and I should be done.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo service vsftpd restart&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now it’s time to define an ftp user or my webserver user&lt;/p&gt;
+
+&lt;p&gt;To create a simple user, I just run:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo useradd -m ec2-webserver
+sudo passwd ec2-webserver &lt;span class=&quot;c&quot;&gt;#to set the user&amp;#39;s password&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Because I chroot into the home folder, it’s important that my user doesn’t own it’s home folder. Instead, the folders the user can write to should be pre-defined and the root of the home folder owned by root itself.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;sudo chown root:root /home/ec2-webserver &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo chmod &lt;span class=&quot;m&quot;&gt;755&lt;/span&gt; /home/ec2-webserver
+sudo mkdir /home/ec2-webserver/css
+sudo mkdir /home/ec2-webserver/html
+sudo mkdir /home/ec2-webserver/php
+sudo mkdir /home/ec2-webserver/files
+sudo mkdir /home/ec2-webserver/etc
+sudo chown ec2-webserver:ec2-webserver /home/ec2-webserver/*&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;ftp---other-notes&quot;&gt;FTP - Other notes&lt;/h3&gt;
+
+&lt;p&gt;Apparently Amazon AWS’s “security groups” makes you define custom rules for what ports to allow inbound traffic on. I disabled mine by allowing all inbound traffic by editing the security group in the EC2 dashboard. IPtables (which is built in linux) is perfectly fine as a firewall, Amazon’s is just a nuisance.&lt;/p&gt;
+
+&lt;p&gt;Also, Windows explorer’s built in ftp client doesn’t support ftp with ssl, so you have to use something like filezilla.&lt;/p&gt;
+
+&lt;p&gt;Since filezilla is on sourceforge, and I’m using windows (purely for the benefit of other windows users who may need help, since I can’t stand windows myself), I’d have to download some malware downloader thing that can load god knows what binaries on my machine; to avoid this, I recommend &lt;a href=&quot;https://chocolatey.org&quot;&gt;chocolatey&lt;/a&gt; which will allow you to type choco install filezilla without worrying about the malware garbage sourceforge tries to push on windows users.&lt;/p&gt;
+
+&lt;p&gt;If you are following along and can’t login to your ftp, try setting your pam_service_name=ftp. That fixed my login issues.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 17 Jan 2015 14:00:01 -0500</pubDate>
+        <link>https://dedominic.pw/csc-311/2015/01/17/Setting-up-an-FTP-and-Generating-a-x509-cert.html</link>
+        <guid isPermaLink="true">https://dedominic.pw/csc-311/2015/01/17/Setting-up-an-FTP-and-Generating-a-x509-cert.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Setting up and Accessing an AWS EC2 Instance on Windows</title>
+        <description>&lt;p&gt;Because the teacher asked me to set up an aws ec2 instance, I have decided to make this post. The purpose of this post is to go step by step on how to set up a free tier Amazon virtual private server.&lt;/p&gt;
+
+&lt;h2 id=&quot;before-we-begin&quot;&gt;Before We Begin&lt;/h2&gt;
+
+&lt;h1 id=&quot;what-you-need&quot;&gt;What you need&lt;/h1&gt;
+
+&lt;p&gt;If you use windows, which is this guide’s primary target, you need the following pieces of software, available &lt;a href=&quot;http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Needed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;* PuTTY
+* PuTTYgen
+* An Amazon free-tier AWS account
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;generating-your-rsa-key&quot;&gt;Generating your RSA key&lt;/h1&gt;
+
+&lt;p&gt;To make life easier, I highly recommend you generate your own public/private key pair. This way Amazon doesn’t have your private key and you could use your key on other servers or services without Amazon having potential access to them.&lt;/p&gt;
+
+&lt;h3 id=&quot;note-only-upload-your-public-key-to-a-server-or-to-anyone-else-your-server-does-not-need-your-private-key-to-authenticate-you-that-is-not-how-publicprivate-key-encryption-works&quot;&gt;&lt;strong&gt;!!!NOTE: ONLY UPLOAD YOUR PUBLIC KEY TO A SERVER OR TO ANYONE ELSE. YOUR SERVER DOES NOT NEED YOUR PRIVATE KEY TO AUTHENTICATE YOU; THAT IS NOT HOW PUBLIC/PRIVATE KEY ENCRYPTION WORKS!!!&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;To do this, first open PuTTYgen.exe; then simply click generate. Move your mouse around to generate randomness for the system entropy pool while it generates your keys. Once it generates your keys, simply save your private key. You could password protect it, but it really doesn’t matter much. Now keep PuTTYgen open as it also indicates your public key in the text box at the top; you want to save this text to your clipboard.&lt;/p&gt;
+
+&lt;h2 id=&quot;log-in-to-awshttpawsamazoncom&quot;&gt;Log in to &lt;a href=&quot;http://aws.amazon.com/&quot;&gt;AWS&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Once you log in to AWS, you should be redirected to the AWS console. There you should see various services available to you. You want to click on the first one on the left, EC2.&lt;/p&gt;
+
+&lt;p&gt;Once in the EC2 dashboard, on the left hand side of the page, click the Key Pairs link. Once there, you want to click on the Import Key Pair button. You will be prompted for a name for you key and a text field below will ask for your public key. Go back to PuTTYgen and copy, if you haven’t already, the &lt;strong&gt;ENTIRE&lt;/strong&gt; copyable text field in the PuTTYgen window. Then paste it into the public key content box.&lt;/p&gt;
+
+&lt;p&gt;Your public key should look something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSeRdyGaI/ilNL0iUiSCj9nw8rCjjCz89BQPhfKZEY/FTHxGAzIyaCCPwDcIkOsauujDgYFKpwJlPn929PN2Uf9WS5dM9OTmSooqQZR9WADFzuJAiFYcg9xkn47PVpDtaQfaHKTtqN3p8ZFZ38eTiOgqPcZcon2jjxjuRrQYRKCEEhEhCBex2bKUGDWgwkBKJAl013bZtKiXcYh1ymLdn7nrq/5HQHuDWLQaT1ReVlQ87C41XQQfjtJCbiHyyjnAlFx1IOwR9+l1B5tgaA4rD887M3y7jUf6KrFxYqizKvesun2qZ5qJoK8VjHl3l5kAtOJoMZRGPSAqqwWxzCxQo1 prussian@HAL9000&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;note-unless-you-want-me-to-have-access-to-your-server-please-do-not-copy-my-rsa-public-key-that-is-in-the-example-field&quot;&gt;NOTE: Unless you want me to have access to your server, PLEASE do not copy my RSA public key that is in the example field&lt;/h3&gt;
+
+&lt;h2 id=&quot;creating-a-new-instance&quot;&gt;Creating a new Instance&lt;/h2&gt;
+
+&lt;p&gt;Now that your public key is on record, it’s time to set up your virtual private server. Because this part is pretty much easy, I’ll leave this section brief. The most important thing I want to mention is that I used the Ubuntu instance and for the storage device, I selected the full 30GBs available for free tier&lt;/p&gt;
+
+&lt;p&gt;Other thing to note: when you are prompted for which key pair you want, make sure to select the one you added manually. Don’t use the Amazon generated one. Also, ignore Amazon’s pesky warning about your ssh port being open to the world. Without your private key, attackers won’t be able to decrypt the servers response and will fail authenticate.&lt;/p&gt;
+
+&lt;h2 id=&quot;accessing-your-server&quot;&gt;Accessing your Server&lt;/h2&gt;
+
+&lt;p&gt;If you used the Ubuntu instance, then good; this part is assuming you are using the Ubuntu instance. Else consult AWS’s documentation.&lt;/p&gt;
+
+&lt;p&gt;Now open up PuTTY.exe. In the flied on the left, scroll down and expand the SSH category. Then under the SSH category, click on the Auth category. At the bottom of this configuration, it asks for your private key file (.ppk). Find your private key file.&lt;/p&gt;
+
+&lt;p&gt;Now scroll to the top of the left field and click on session. On the Host Name (or IP) text field, you want to put your server’s public IP address. To find your IP address go to your list of running EC2 Instances. At the bottom, in the description category, there should be a field indicating the server’s public IP. Paste this IP in the appropriate text field in PuTTY. Before launching, I recommend saving your session settings so you don’t have to do all this again.&lt;/p&gt;
+
+&lt;p&gt;Now that you have it configured, launch PuTTY by clicking the Open button. A terminal window should launch and ask for your username. If you used the Ubuntu Instance, the username is ubuntu.&lt;/p&gt;
+
+&lt;p&gt;That’s it, enjoy your server.&lt;/p&gt;
+
+&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
+
+&lt;h1 id=&quot;fails-to-login-due-to-publickey&quot;&gt;Fails to login due to (publickey)&lt;/h1&gt;
+
+&lt;p&gt;Make sure you didn’t save your putty private key file in a place you don’t have permissions to read without UAC elevation (e.g. the program files folder). Save it in your documents.&lt;/p&gt;
+
+&lt;p&gt;Also, make sure you are logging in as ubuntu, not root.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 15 Jan 2015 11:40:01 -0500</pubDate>
+        <link>https://dedominic.pw/csc-311/2015/01/15/Setting-up-an-AWS-ec2-instance.html</link>
+        <guid isPermaLink="true">https://dedominic.pw/csc-311/2015/01/15/Setting-up-an-AWS-ec2-instance.html</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>

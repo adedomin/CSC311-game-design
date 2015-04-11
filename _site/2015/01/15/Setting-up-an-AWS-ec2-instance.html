@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Setting up and Accessing an AWS EC2 Instance on Windows</title>
+    <meta name="description" content="Blog about development of school project for CSC 311
+">
+
+    <link rel="stylesheet" type="text/css" href="/csc-311/css/main.css">
+    <link rel="canonical" href="https://dedominic.pw/csc-311/2015/01/15/Setting-up-an-AWS-ec2-instance.html">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/csc-311/">CSC 311 Project Blog</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Setting up and Accessing an AWS EC2 Instance on Windows</h1>
+    <p class="post-meta">Jan 15, 2015</p>
+  </header>
+
+  <article class="post-content">
+    <p>Because the teacher asked me to set up an aws ec2 instance, I have decided to make this post. The purpose of this post is to go step by step on how to set up a free tier Amazon virtual private server.</p>
+
+<h2 id="before-we-begin">Before We Begin</h2>
+
+<h1 id="what-you-need">What you need</h1>
+
+<p>If you use windows, which is this guide’s primary target, you need the following pieces of software, available <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">here</a>.</p>
+
+<p>Needed:</p>
+
+<pre><code>* PuTTY
+* PuTTYgen
+* An Amazon free-tier AWS account
+</code></pre>
+
+<h1 id="generating-your-rsa-key">Generating your RSA key</h1>
+
+<p>To make life easier, I highly recommend you generate your own public/private key pair. This way Amazon doesn’t have your private key and you could use your key on other servers or services without Amazon having potential access to them.</p>
+
+<h3 id="note-only-upload-your-public-key-to-a-server-or-to-anyone-else-your-server-does-not-need-your-private-key-to-authenticate-you-that-is-not-how-publicprivate-key-encryption-works"><strong>!!!NOTE: ONLY UPLOAD YOUR PUBLIC KEY TO A SERVER OR TO ANYONE ELSE. YOUR SERVER DOES NOT NEED YOUR PRIVATE KEY TO AUTHENTICATE YOU; THAT IS NOT HOW PUBLIC/PRIVATE KEY ENCRYPTION WORKS!!!</strong></h3>
+
+<p>To do this, first open PuTTYgen.exe; then simply click generate. Move your mouse around to generate randomness for the system entropy pool while it generates your keys. Once it generates your keys, simply save your private key. You could password protect it, but it really doesn’t matter much. Now keep PuTTYgen open as it also indicates your public key in the text box at the top; you want to save this text to your clipboard.</p>
+
+<h2 id="log-in-to-awshttpawsamazoncom">Log in to <a href="http://aws.amazon.com/">AWS</a></h2>
+
+<p>Once you log in to AWS, you should be redirected to the AWS console. There you should see various services available to you. You want to click on the first one on the left, EC2.</p>
+
+<p>Once in the EC2 dashboard, on the left hand side of the page, click the Key Pairs link. Once there, you want to click on the Import Key Pair button. You will be prompted for a name for you key and a text field below will ask for your public key. Go back to PuTTYgen and copy, if you haven’t already, the <strong>ENTIRE</strong> copyable text field in the PuTTYgen window. Then paste it into the public key content box.</p>
+
+<p>Your public key should look something like this:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSeRdyGaI/ilNL0iUiSCj9nw8rCjjCz89BQPhfKZEY/FTHxGAzIyaCCPwDcIkOsauujDgYFKpwJlPn929PN2Uf9WS5dM9OTmSooqQZR9WADFzuJAiFYcg9xkn47PVpDtaQfaHKTtqN3p8ZFZ38eTiOgqPcZcon2jjxjuRrQYRKCEEhEhCBex2bKUGDWgwkBKJAl013bZtKiXcYh1ymLdn7nrq/5HQHuDWLQaT1ReVlQ87C41XQQfjtJCbiHyyjnAlFx1IOwR9+l1B5tgaA4rD887M3y7jUf6KrFxYqizKvesun2qZ5qJoK8VjHl3l5kAtOJoMZRGPSAqqwWxzCxQo1 prussian@HAL9000</code></pre></div>
+
+<h3 id="note-unless-you-want-me-to-have-access-to-your-server-please-do-not-copy-my-rsa-public-key-that-is-in-the-example-field">NOTE: Unless you want me to have access to your server, PLEASE do not copy my RSA public key that is in the example field</h3>
+
+<h2 id="creating-a-new-instance">Creating a new Instance</h2>
+
+<p>Now that your public key is on record, it’s time to set up your virtual private server. Because this part is pretty much easy, I’ll leave this section brief. The most important thing I want to mention is that I used the Ubuntu instance and for the storage device, I selected the full 30GBs available for free tier</p>
+
+<p>Other thing to note: when you are prompted for which key pair you want, make sure to select the one you added manually. Don’t use the Amazon generated one. Also, ignore Amazon’s pesky warning about your ssh port being open to the world. Without your private key, attackers won’t be able to decrypt the servers response and will fail authenticate.</p>
+
+<h2 id="accessing-your-server">Accessing your Server</h2>
+
+<p>If you used the Ubuntu instance, then good; this part is assuming you are using the Ubuntu instance. Else consult AWS’s documentation.</p>
+
+<p>Now open up PuTTY.exe. In the flied on the left, scroll down and expand the SSH category. Then under the SSH category, click on the Auth category. At the bottom of this configuration, it asks for your private key file (.ppk). Find your private key file.</p>
+
+<p>Now scroll to the top of the left field and click on session. On the Host Name (or IP) text field, you want to put your server’s public IP address. To find your IP address go to your list of running EC2 Instances. At the bottom, in the description category, there should be a field indicating the server’s public IP. Paste this IP in the appropriate text field in PuTTY. Before launching, I recommend saving your session settings so you don’t have to do all this again.</p>
+
+<p>Now that you have it configured, launch PuTTY by clicking the Open button. A terminal window should launch and ask for your username. If you used the Ubuntu Instance, the username is ubuntu.</p>
+
+<p>That’s it, enjoy your server.</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h1 id="fails-to-login-due-to-publickey">Fails to login due to (publickey)</h1>
+
+<p>Make sure you didn’t save your putty private key file in a place you don’t have permissions to read without UAC elevation (e.g. the program files folder). Save it in your documents.</p>
+
+<p>Also, make sure you are logging in as ubuntu, not root.</p>
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">CSC 311 Project Blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li>Anthony DeDominic</li>
+          <li><a href="mailto:anthony@dedominic.pw">anthony@dedominic.pw</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/adedomin">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">adedomin</span>
+            </a>
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Blog about development of school project for CSC 311
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
