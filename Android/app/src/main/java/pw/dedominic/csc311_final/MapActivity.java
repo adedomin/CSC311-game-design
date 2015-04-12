@@ -75,7 +75,7 @@
  * This handler returns messages informing newly found database info
  * MapActivity fetches 2d arrays of newly discovered entries to be turned into
  * buttons on the map view
- * @see httpService
+ * @see HttpService
  */
 
 /** \class DesktopInterfaceHandler extends Handler
