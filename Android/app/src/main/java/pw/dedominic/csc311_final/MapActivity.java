@@ -1,170 +1,161 @@
 /** \file MapActivity.java
  * entry point for app
  */
+package pw.dedominic.csc311_final;
 
-/** \class MapActivity
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.view.View;
+
+/**
+ * \class MapActivity
  * This is the map activity class which is the main entry point for this app
  * The only other activities are login and battleView
  *
- * @see LoginActivity 
- * @see battleView
+ * @see LoginActivity
+ * @see BattleView
  */
+public class MapActivity extends Activity
+{
+	/**
+	 * Services and other classes needed
+	 */
+	private Functions mFunctions = new Functions();
 
-/** \var BluetoothAdapter mBluetoothAdapter
- * The bluetooth radio
- */
+	/**
+	 * Handler Objects
+	 * @see pw.dedominic.csc311_final.GameHandlers
+	 */
+	private GameHandlers.BtHandleRead mBtHandleRead;
+	private GameHandlers.BtHandleWrite mBtHandleWrite;
 
-/** \var String USERNAME
- * player user name
- */
+	private GameHandlers.HttpServiceInfo mHttpServiceInfo;
+	private GameHandlers.DesktopNotifications mDesktopNotifications;
 
-/** \var String UNHASHED_PASSWORD
- * player password for database authentication
- */
+	private GameHandlers.GpsHandler mGpsHandler;
 
-/** \var String BT_ADDR
- * String which contains the user's bluetooth MAC_ADDR
- */
+	// bluetooth radio device.
+	private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-/** \var double ImageViewLast_X
- * Used to get difference to accurately Scroll ImageViews
- */
+	// player user name.
+	private String USERNAME = "";
 
-/** \var double ImageViewLast_Y
- * Used to get difference to accurately Scroll ImageViews
+	// player's unhashed password; hashes at DB.
+	private String UNHASHED_PASSWORD = "";
 
-/** \var boolean IS_BT_CONNECT
- * is connected and in battle or soon to be in battle
- */
+	// player's Bluetooth MAC ADDRESS.
+	// Allows for seamless connection with enemies.
+	private String BT_ADDR = mBluetoothAdapter.getAddress();
 
-/** \var boolean IS_HTTP_CONNECT
- * Last connection to database was successful
- */
+	/**
+	 * Used to get difference to accurately Scroll MapView.
+	 * @see pw.dedominic.csc311_final.MapView.viewTranslate()
+	 */
+	private float GPS_COORD_LAST_LATI;
 
-/** \var boolean IS_DESKTOP_CONNECT
- * Desktop user is actively connected and watching a battle
- */ 
+	/**
+	 * Used to get difference to accurately Scroll MapView.
+	 * @see pw.dedominic.csc311_final.MapView.viewTranslate()
+	 */
+	private float GPS_COORD_LAST_LONG;
 
-/** \class BtHandleRead extends Handler
- * This is the read handler class for the battleView activity
- * This handler allows for communicating from the btService to the battleView
- * methods in this handler call various setters in battleView
- * 
- * This is a subclass of MapActivity
- *
- * @see battleView
- * @see btConnectService
- */
+	// is connected and in battle or soon to be in battle
+	private boolean IS_BT_CONNECT = false;
 
-/** \class BtHandleWrite extends Handler
- * This class allows for battleView to communicate to the MapActivity
- * battleView will send a message and MapView.btHandleWrite will fetch neccesary
- * information to send where it needs to go.
- *
- * @see battleView
- * @see btConnectService
- */
+	// var indicates if last HTTP connection was successful
+	private boolean IS_HTTP_CONNECT = false;
 
-/** \class GpsServiceInfo extends Handler
- * Informs the MapActivity about current location as reported by GPS
- *
- * @see gpsService
- */
+	// Desktop user is actively connected and sending messages
+ 	private boolean IS_DESKTOP_CONNECT = false;
 
-/** \class HttpServiceInfo extends Handler
- * This handler returns messages informing newly found database info
- * MapActivity fetches 2d arrays of newly discovered entries to be turned into
- * buttons on the map view
- * @see HttpService
- */
+	/**
+	 * Function that takes a view and moves it by vectors defined
+	 * Requires the views have some previous state
+	 *
+	 * @param newGPS_X new GPS coords, latitude
+	 * @param newGPS_Y new GPS coords, longitude
+	 */
+	private void translateView(float newGPS_X, float newGPS_Y)
+	{
+		return;
+	}
 
-/** \class DesktopInterfaceHandler extends Handler
- * This handler connects to a server which waits for desktop users to push info
- * info is handled here
- */
+	/** \fn boolean loginResult(Intent intent)
+	 * checks results of LoginActivity
+	 * If passed, parses Intent for user and password entered
+	 * If failed, it signals for program to terminate
+	 *
+	 * @param intent contains messages passed back by LoginActivity
+	 * @return returns bool indicating if user logged in or cancelled
+	 */
 
-/** \class DesktopViewShareHandler extends Handler
- * Allows desktop user to get state of battle to render it on their screen
- */
+	/** \fn void startBattle(int initiator, String ENEMY_MAC_ADDR)
+	 * starts battle view.
+	 *
+	 * @param initiator who started battle, starter controls state
+	 * @param ENEMY_MAC_ADDR mac address of enemy to connect to
+	 */
+	void startBattle(boolean initiator, String ENEMY_MAC_ADDR)
+	{
+		return;
+	}
 
-/** \fn void translateView(View view, double x_vector, double y_vector)
- * Function that takes a view and moves it by vectors defined
- * Requires the views have some previous state
- *
- * @param view any class that extends view
- * @param x_vector movement on x
- * @param y_vector movement on y
- * @see onTouch()
- */
+	/** \fn void connectToEnemy(String MAC_ADDR)
+	 * function that handles connecting opponents using BtConnectService
+	 * called by startBattle()
+	 *
+	 * @param MAC_ADDR mac address of opponent.
+	 */
+	void connectToEnemy(String MAC_ADDR)
+	{
+		return;
+	}
 
-/** \fn void zoomView(View view, double factor)
- * Function that grows or shrinks views
- *
- * @param view view being zoomed
- * @param factor how much it's being zoomed
- */
+	/** \fn void createMapNode(double x, double y, String user_name, int team_id)
+	 * creates map buttons that indicate where players are
+	 * clicking on them will result in getting info about user
+	 *
+	 * @param x x position on map
+	 * @param y y position on map
+	 * @param user_name name of user
+	 * @param team_id determines color of node to indicate who node belongs to
+	 */
+	void createMapNode(double x, double y, String user_name, int team_id)
+	{
+		return;
+	}
 
-/** \fn void startLogin()
- * initializes the login Activity if user not logged in
- */
+	/**
+	 * takes latitude and edits it to be viewable on map
+	 *
+	 * @param latitude latitude received from gps or database
+	 * @return value minus a set constant
+	 *         will be X coord on map
+	 */
+	float latitudeToMapCoord(float latitude)
+	{
+		return mFunctions.decimalDegrees_to_meters(latitude);
+	}
 
-/** \fn boolean loginResult(Intent intent)
- * checks results of LoginActivity
- * If passed, parses Intent for user and password entered
- * If failed, it signals for program to terminate
- * 
- * @param intent contains messages passed back by LoginActivity
- * @return returns bool indicating if user logged in or cancelled
- */
+	/** \fn double longitudeToMapCoord(double longitude)
+	 * takes longitude and returns map location
+	 *
+	 * @param longitude longitude from gps or database
+	 * @return value minus a set constant
+	 */
+	private
 
-/** \fn void startBattle(int initiator, String ENEMY_MAC_ADDR)
- * starts battle view.
- *
- * @param initiator who started battle, starter controlls state
- * @param ENEMY_MAC_ADDR mac address of enemy to connect to
- */
+	/** \fn void toastMessage(String message)
+	 * message to be read by phone user
+	 *
+	 * @param message the message to display to user
+	 */
 
-/** \fn void connectToEnemy(String MAC_ADDR)
- * function that handles connecting opponents using BtConnectService
- * called by startBattle()
- *
- * @param MAC_ADDR mac address of opponent.
- */
-
-/** \fn void createMapNode(double x, double y, String user_name, int team_id)
- * creates map buttons that indicate where players are
- * clicking on them will result in getting info about user
- *
- * @param x x position on map
- * @param y y position on map
- * @param user_name name of user
- * @param team_id determines color of node to indicate who node belongs to
- */
-
-/** \fn double latitudeToMapCoord(double Latitude)
- * takes latitude and edits it to be viewable on map
- * 
- * @param latitude latitude received from gps or database
- * @return value minus a set constant
- */
-
-/** \fn double longitudeToMapCoord(double longitude)
- * takes longitude and returns map location
- *
- * @param longitude longitude from gps or database
- * @return value minus a set constant
- */
-
-/** \fn void toastMessage(String message)
- * message to be read by phone user
- *
- * @param message the message to display to user
- */
-
-/** \fn void coordMessage(double x, double y, String message)
- * message telling user where to go + a message
- *
- * @param x location on map
- * @param y location on map
- * @param message message to pass to user
- */
+	/** \fn void coordMessage(double x, double y, String message)
+	 * message telling user where to go + a message
+	 *
+	 * @param x location on map
+	 * @param y location on map
+	 * @param message message to pass to user
+	 */
+}
