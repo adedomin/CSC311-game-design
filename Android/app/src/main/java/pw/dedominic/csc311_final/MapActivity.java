@@ -6,13 +6,44 @@
  * This is the map activity class which is the main entry point for this app
  * The only other activities are login and battleView
  *
- * @see login
+ * @see LoginActivity 
  * @see battleView
  */
 
-/** \var tamplate for vars needed
- *
+/** \var BluetoothAdapter mBluetoothAdapter
+ * The bluetooth radio
  */
+
+/** \var String USERNAME
+ * player user name
+ */
+
+/** \var String UNHASHED_PASSWORD
+ * player password for database authentication
+ */
+
+/** \var String BT_ADDR
+ * String which contains the user's bluetooth MAC_ADDR
+ */
+
+/** \var double ImageViewLast_X
+ * Used to get difference to accurately Scroll ImageViews
+ */
+
+/** \var double ImageViewLast_Y
+ * Used to get difference to accurately Scroll ImageViews
+
+/** \var boolean IS_BT_CONNECT
+ * is connected and in battle or soon to be in battle
+ */
+
+/** \var boolean IS_HTTP_CONNECT
+ * Last connection to database was successful
+ */
+
+/** \var boolean IS_DESKTOP_CONNECT
+ * Desktop user is actively connected and watching a battle
+ */ 
 
 /** \class BtHandleRead extends Handler
  * This is the read handler class for the battleView activity
