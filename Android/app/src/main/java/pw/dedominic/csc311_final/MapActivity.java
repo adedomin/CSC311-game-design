@@ -86,46 +86,7 @@ public class MapActivity extends Activity
 		setContentView(R.layout.activity_map);
 
 		mMapView = (MapView) findViewById(R.id.mapView);
-		createMapNode(10,20,"someone",0xffdddddd);
-		createMapNode(65,123,"someone_else",0xffdddddd);
-		createMapNode(200,13,"someone_else_else",0xffdddddd);
 		mMapView.update_map();
-	}
-
-	/**
-	 * Takes a decimal degree longitude and transforms it into a
-	 * Easting and Northing X coordinate.
-	 * </p>
-	 * Achieved by equation: $x = R(\lambda - \lambda_{0})$
-	 * where \lambda = longitude and R = the approximate radius of earth.
-	 * \lambda_{0} = -180 indicating to start from the west most latitude.
-	 * </p>
-	 * @param lon longitude in decimal degress
-	 * @return double x in a Easting and Northing coordinate system
-	 */
-	private double longitudeToMeters(float lon)
-	{
-		// +180 prevents negative values
-		return Constants.APPROX_EARTH_RADIUS * (lon - -180);
-	}
-
-	/**
-	 * Takes a decimal degree latitude and converts it to easting and northing
-	 * Y coordinate
-	 * </p>
-	 * Eqn: $y = R\ln\Big[\tan\Big(\frac{\pi}{4} + \frac{\phi}{2}\Big)\Big]$
-	 * where R = approximate radius of earth and \phi = latitude.
-	 * </p>
-	 * @param lat latitude in decimal degress
-	 * @return double Y in a Easting and Northin coordinate system
-	 */
-	private double latitudeToMeters(float lat)
-	{
-		// need it in radians
-		double lat_in_rad = (float) (lat * Math.PI / 180);
-
-		return Constants.APPROX_EARTH_RADIUS *
-				Math.log(Math.tan((Math.PI/4)+(lat/2)));
 	}
 
 	/** \fn boolean loginResult(Intent intent)
@@ -159,21 +120,6 @@ public class MapActivity extends Activity
 	void connectToEnemy(String MAC_ADDR)
 	{
 		return;
-	}
-
-	/**
-	 * \fn void createMapNode(double x, double y, String user_name, int team_id)
-	 * creates map buttons that indicate where players are
-	 * clicking on them will result in getting info about user
-	 *
-	 * @param x         x position on map
-	 * @param y         y position on map
-	 * @param user_name name of user
-	 * @param team_id   determines color of node to indicate who node belongs to
-	 */
-	void createMapNode(float x, float y, String user_name, int team_id)
-	{
-		mMapView.addPoint(x,y,user_name,team_id);
 	}
 
 	/**

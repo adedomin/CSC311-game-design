@@ -25,8 +25,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -81,10 +79,10 @@ public class MapView extends View
 	 * Sets bottom map boundary based on latitude given
 	 * </p>
 	 * Note: this assumes that screen is in portrait mode.
-	 * @param y latitude in decimal degress
+	 * @param y latitude in decimal degrees
 	 * @return sum of latitude + (aspect ratio * a constant(0.001))
 	 */
-	private double map_bottom_bountry(double y)
+	private double map_bottom_boundary(double y)
 	{
 		double aspect_ratio = getHeight()/getWidth();
 		return y + (aspect_ratio * Constants.PLAYER_MAP_VIEW_OFFSET);
@@ -103,6 +101,10 @@ public class MapView extends View
 	public MapView(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
+	}
+
+	public void setmHandler(Handler _mHandler)
+	{
 	}
 
 	/**
@@ -141,9 +143,18 @@ public class MapView extends View
 			return;
 		}
 
-
 		if (!IS_READY)
 		{
+			setCenterLocation(45.2340,70.2220);
+			addGeoPoint(45.234664, 70.2221, "asd4", 0xFF00FF00);
+			addGeoPoint(45.23411, 70.22155, "asd3", 0xFFFF0000);
+			addGeoPoint(45.23333, 70.2225, "asd2", 0xFF0000FF);
+			if (CENTER_LOCATION_LATITUDE < 0 || CENTER_LOCATION_LONGITUDE < 0)
+			{
+				mDrawHandler.sleep(1);
+				return;
+			}
+
 			PLAYERS_POINT = new PlayerPoint(
 					getWidth()/2,
 					getHeight()/2,
@@ -151,13 +162,14 @@ public class MapView extends View
 			IS_READY = true;
 		}
 
+		translatePoints();
 		mDrawHandler.sleep(1000 / Constants.MAP_VIEW_FPS);
 	}
 
 	/**
 	 * adds point to red black tree
 	 * username is key, value is point
-	 *
+	 * </p>
 	 * @param x x coord
 	 * @param y y coord
 	 * @param u user name string
@@ -172,11 +184,27 @@ public class MapView extends View
 		POINTS.put(u, new PlayerPoint(x, y, c));
 	}
 
-	public void addGeoPoint(double lat, double lon, String u, int c)
+	/**
+	 * Add Point using Latitude and Longitude
+	 * </p>
+	 * calls decimalDegreesToPixel then addPoint
+	 * @param lat latitude in decimal degrees
+	 * @param lon longitude in decimal degrees
+	 * @param u user name string
+	 * @param c color as a hexadecimal ARGB number
+	 */
+	public boolean addGeoPoint(double lat, double lon, String u, int c)
 	{
+		if (CENTER_LOCATION_LONGITUDE < 0 || CENTER_LOCATION_LATITUDE < 0)
+		{
+			return false;
+		}
+
 		// index 0 = x, index y = 1
 		double[] xy = decimalDegreesToPixels(lat, lon);
 		addPoint((float)xy[0], (float)xy[1], u, c);
+
+		return true;
 	}
 
 	public void updatePoint(float x, float y, String u)
@@ -223,19 +251,28 @@ public class MapView extends View
 	{
 		double left_boundary = map_left_boundry(CENTER_LOCATION_LONGITUDE);
 		double right_boundary = map_right_boundry(CENTER_LOCATION_LONGITUDE);
-		double bottom_boundary = map_bottom_bountry(CENTER_LOCATION_LATITUDE);
+		double bottom_boundary = map_bottom_boundary(CENTER_LOCATION_LATITUDE) *
+				Math.PI / 180;
+		Log.e("Value of boundary_bottom", Double.toString(bottom_boundary));
+		Log.e("Value of boundary right - left", Double.toString(right_boundary - left_boundary));
+		Log.e("Value of screenSize", Double.toString(getHeight()));
+
 
 		double x = (lon - left_boundary) *
 				(getWidth() / (right_boundary - left_boundary));
 
 		lat = lat * Math.PI / 180;
-		double map_width = ((getWidth() / right_boundary - left_boundary) * 360)
+		double map_width = ((getWidth() / (right_boundary - left_boundary)) * 360)
 				/ (2 * Math.PI);
 		double y_offset = (map_width / 2 * Math.log(
 				(1 + Math.sin(bottom_boundary)) / (1 - Math.sin(bottom_boundary))
 		));
 		double y = getHeight() - ((map_width / 2 * Math.log(
 				(1 + Math.sin(lat)) / (1 - Math.sin(lat)))) - y_offset);
+
+		Log.e("Value of y", Double.toString(y));
+		Log.e("Value of y_offset", Double.toString(y_offset));
+		Log.e("Value of map_width", Double.toString(map_width));
 
 		double[] return_arr = {x,y};
 
@@ -258,6 +295,8 @@ public class MapView extends View
 					CENTER_LOCATION_DELTA_Y
 			);
 		}
+		CENTER_LOCATION_DELTA_X = 0;
+		CENTER_LOCATION_DELTA_Y = 0;
 	}
 	/**
 	 * Class the describes a point on the map.
