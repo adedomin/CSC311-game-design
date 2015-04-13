@@ -53,20 +53,41 @@ public class MapView extends View
 	// checks if map ready to render points
 	private boolean IS_READY = false;
 
+	/**
+	 * In C this would be a Macro.
+	 * Sets map boundaries based on Constant Value
+	 * </p>
+	 * @param x a longitude in decimal degress
+	 * @return difference of x minus an offset (0.001)
+	 */
 	private double map_left_boundry(double x)
 	{
 		return x - Constants.PLAYER_MAP_VIEW_OFFSET;
 	}
 
+	/**
+	 * In C this would be a Macro.
+	 * Sets map boundary based on Constant Value
+	 * </p>
+	 * @param x a longitude in decimal degress
+	 * @return sum of x minus an offset (0.001)
+	 */
 	private double map_right_boundry(double x)
 	{
-		return x - Constants.PLAYER_MAP_VIEW_OFFSET;
+		return x + Constants.PLAYER_MAP_VIEW_OFFSET;
 	}
 
+	/**
+	 * Sets bottom map boundary based on latitude given
+	 * </p>
+	 * Note: this assumes that screen is in portrait mode.
+	 * @param y latitude in decimal degress
+	 * @return sum of latitude + (aspect ratio * a constant(0.001))
+	 */
 	private double map_bottom_bountry(double y)
 	{
-		double aspect_ratio = getWidth()/getHeight();
-		return y - (aspect_ratio * Constants.PLAYER_MAP_VIEW_OFFSET);
+		double aspect_ratio = getHeight()/getWidth();
+		return y + (aspect_ratio * Constants.PLAYER_MAP_VIEW_OFFSET);
 	}
 
 	// center's location geographically
