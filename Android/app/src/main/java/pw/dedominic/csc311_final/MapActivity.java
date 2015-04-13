@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-/** \file MapActivity.java
- * entry point for app
- */
 package pw.dedominic.csc311_final;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,9 +25,8 @@ import android.os.Message;
  * \class MapActivity
  * This is the map activity class which is the main entry point for this app
  * The only other activities are login and battleView
- *
- * @see LoginActivity
- * @see BattleView
+ * </p>
+ * @see pw.dedominic.csc311_final.MapView
  */
 public class MapActivity extends Activity
 {

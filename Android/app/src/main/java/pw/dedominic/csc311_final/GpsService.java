@@ -23,7 +23,7 @@ import android.os.Handler;
  */
 public class GpsService
 {
-	// communcates GPS changes to Map Activity via messages to handler
+	// communicates GPS changes to Map Activity via messages to handler
 	private Handler mHandler;
 
 	public GpsService(Handler _mHandler)

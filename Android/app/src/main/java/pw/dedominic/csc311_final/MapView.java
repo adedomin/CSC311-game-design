@@ -53,9 +53,27 @@ public class MapView extends View
 	// checks if map ready to render points
 	private boolean IS_READY = false;
 
-	// center's location, EN = Easting and North Coordinate system
-	private double CENTER_LOCATION_EN_X;
-	private double CENTER_LOCATION_EN_Y;
+	private double map_left_boundry(double x)
+	{
+		return x - Constants.PLAYER_MAP_VIEW_OFFSET;
+	}
+
+	private double map_right_boundry(double x)
+	{
+		return x - Constants.PLAYER_MAP_VIEW_OFFSET;
+	}
+
+	private double map_bottom_bountry(double y)
+	{
+		double aspect_ratio = getWidth()/getHeight();
+		return y - (aspect_ratio * Constants.PLAYER_MAP_VIEW_OFFSET);
+	}
+
+	// center's location geographically
+	// in decimal degrees
+	// initially -99, anything below 0 would work
+	private double CENTER_LOCATION_LONGITUDE = -99;
+	private double CENTER_LOCATION_LATITUDE = -99;
 
 	// delta of Center's previous and Center's current
 	private float CENTER_LOCATION_DELTA_X = 0;
@@ -66,6 +84,10 @@ public class MapView extends View
 		super(context, attrs);
 	}
 
+	/**
+	 * Draws map when invalidate() is called
+	 * called every 1000/30 milliseconds (30 FPS)
+	 */
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
@@ -129,13 +151,11 @@ public class MapView extends View
 		POINTS.put(u, new PlayerPoint(x, y, c));
 	}
 
-	public void addPoint_EN_coord(double x, double y, String u, int c)
+	public void addGeoPoint(double lat, double lon, String u, int c)
 	{
-		double x_delta = (x - CENTER_LOCATION_EN_X);
-		double y_delta = (y - CENTER_LOCATION_EN_Y);
-		float map_point_x = (float) (getWidth()/2 + x_delta);
-		float map_point_y = (float) (getHeight()/2 + y_delta);
-		addPoint(map_point_x, map_point_y, u, c);
+		// index 0 = x, index y = 1
+		double[] xy = decimalDegreesToPixels(lat, lon);
+		addPoint((float)xy[0], (float)xy[1], u, c);
 	}
 
 	public void updatePoint(float x, float y, String u)
@@ -143,14 +163,62 @@ public class MapView extends View
 		POINTS.get(u).setXY(x, y);
 	}
 
-	public void setCenterLocation(double x, double y)
+	/**
+	 * Map activity will send updated GPS Coords here.
+	 * Function gets the difference between the new and the old.
+	 * This difference is used for translating points away or towards center
+	 * </p>
+	 * @param lat latitude in decimal degrees
+	 * @param lon longitude in decimal degrees
+	 */
+	public void setCenterLocation(double lat, double lon)
 	{
+		if (CENTER_LOCATION_LATITUDE < 0 || CENTER_LOCATION_LONGITUDE < 0)
+		{
+			CENTER_LOCATION_LATITUDE = lat;
+			CENTER_LOCATION_LONGITUDE = lon;
+		}
+
+		// function returns an x y pair, index 0 = x; index 1 = y
+		double[] xy = decimalDegreesToPixels(lat, lon);
 		// Player's point is static, so points should move away when
 		// center "moves" away
-		CENTER_LOCATION_DELTA_X = (float) (CENTER_LOCATION_EN_X - x);
-		CENTER_LOCATION_DELTA_Y = (float) (CENTER_LOCATION_EN_Y - y);
-		CENTER_LOCATION_EN_X = x;
-		CENTER_LOCATION_EN_Y = y;
+		CENTER_LOCATION_DELTA_X = (float) (getWidth()/2 - xy[0]);
+		CENTER_LOCATION_DELTA_Y = (float) (getHeight()/2 - xy[1]);
+		CENTER_LOCATION_LONGITUDE = lon;
+		CENTER_LOCATION_LATITUDE = lat;
+	}
+
+	/**
+	 * true mercator projection.
+	 * Converts given decimal degree values
+	 * and converts them to pixels on device's screen
+	 * </p>
+	 * @param lat latitude in decimal degrees
+	 * @param lon longitude in decimal degrees
+	 * @return double array with an (x,y) coordinate pair
+	 */
+	public double[] decimalDegreesToPixels(double lat, double lon)
+	{
+		double left_boundary = map_left_boundry(CENTER_LOCATION_LONGITUDE);
+		double right_boundary = map_right_boundry(CENTER_LOCATION_LONGITUDE);
+		double bottom_boundary = map_bottom_bountry(CENTER_LOCATION_LATITUDE);
+
+		double x = (lon - left_boundary) *
+				(getWidth() / (right_boundary - left_boundary));
+
+		lat = lat * Math.PI / 180;
+		double map_width = ((getWidth() / right_boundary - left_boundary) * 360)
+				/ (2 * Math.PI);
+		double y_offset = (map_width / 2 * Math.log(
+				(1 + Math.sin(bottom_boundary)) / (1 - Math.sin(bottom_boundary))
+		));
+		double y = getHeight() - ((map_width / 2 * Math.log(
+				(1 + Math.sin(lat)) / (1 - Math.sin(lat)))) - y_offset);
+
+		double[] return_arr = {x,y};
+
+		return return_arr;
 	}
 
 	/**
@@ -172,7 +240,7 @@ public class MapView extends View
 	}
 	/**
 	 * Class the describes a point on the map.
-	 * Requires username, x and y and a color
+	 * Requires x and y and a color
 	 */
 	private class PlayerPoint
 	{

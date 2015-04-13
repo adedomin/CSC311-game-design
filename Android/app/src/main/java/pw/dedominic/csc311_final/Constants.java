@@ -45,6 +45,7 @@ public interface Constants
 	public float METERS_PER_SCREEN_LENGTH = (float) 111.23;
 	public double APPROX_CIRCUMFERENCE_EARTH_METERS = 40075E3;
 	public double APPROX_EARTH_RADIUS = 6371E3;
+	public double PLAYER_MAP_VIEW_OFFSET = .001;
 
 	/**
 	 * View specific constants
