@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2015. Anthony DeDominic
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pw.dedominic.csc311_final;
 
 import android.content.Context;
@@ -40,6 +56,10 @@ public class MapView extends View
 	// center's location, EN = Easting and North Coordinate system
 	private double CENTER_LOCATION_EN_X;
 	private double CENTER_LOCATION_EN_Y;
+
+	// delta of Center's previous and Center's current
+	private float CENTER_LOCATION_DELTA_X = 0;
+	private float CENTER_LOCATION_DELTA_Y = 0;
 
 	public MapView(Context context, AttributeSet attrs)
 	{
@@ -111,8 +131,10 @@ public class MapView extends View
 
 	public void addPoint_EN_coord(double x, double y, String u, int c)
 	{
-		float map_point_x = (float) Math.abs(CENTER_LOCATION_EN_X - x);
-		float map_point_y = (float) Math.abs(CENTER_LOCATION_EN_Y - y);
+		double x_delta = (x - CENTER_LOCATION_EN_X);
+		double y_delta = (y - CENTER_LOCATION_EN_Y);
+		float map_point_x = (float) (getWidth()/2 + x_delta);
+		float map_point_y = (float) (getHeight()/2 + y_delta);
 		addPoint(map_point_x, map_point_y, u, c);
 	}
 
@@ -123,6 +145,10 @@ public class MapView extends View
 
 	public void setCenterLocation(double x, double y)
 	{
+		// Player's point is static, so points should move away when
+		// center "moves" away
+		CENTER_LOCATION_DELTA_X = (float) (CENTER_LOCATION_EN_X - x);
+		CENTER_LOCATION_DELTA_Y = (float) (CENTER_LOCATION_EN_Y - y);
 		CENTER_LOCATION_EN_X = x;
 		CENTER_LOCATION_EN_Y = y;
 	}
@@ -133,14 +159,17 @@ public class MapView extends View
 	 * Points are either moving away from center point (player) or,
 	 * Points are moving towards center point.
 	 * For all intents and purposes, center point (player) does not move
-	 * @param x vector x
-	 * @param y vector y
 	 */
-	public void translatePoints(float x, float y)
+	public void translatePoints()
 	{
-
+		for (Map.Entry<String, PlayerPoint> entry : POINTS.entrySet())
+		{
+			entry.getValue().applyVector(
+					CENTER_LOCATION_DELTA_X,
+					CENTER_LOCATION_DELTA_Y
+			);
+		}
 	}
-
 	/**
 	 * Class the describes a point on the map.
 	 * Requires username, x and y and a color
@@ -163,6 +192,12 @@ public class MapView extends View
 		{
 			x = _x;
 			y = _y;
+		}
+
+		public void applyVector(float _x, float _y)
+		{
+			x += _x;
+			y += _y;
 		}
 
 		public void draw(Canvas canvas)
