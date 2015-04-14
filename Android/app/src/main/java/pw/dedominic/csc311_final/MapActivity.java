@@ -86,7 +86,9 @@ public class MapActivity extends Activity
 		setContentView(R.layout.activity_map);
 
 		mMapView = (MapView) findViewById(R.id.mapView);
+		mMapView.setInitialPoint(45.2340,70.2220);
 		mMapView.update_map();
+
 	}
 
 	/** \fn boolean loginResult(Intent intent)
