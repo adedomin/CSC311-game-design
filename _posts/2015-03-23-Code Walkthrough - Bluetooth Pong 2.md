@@ -77,7 +77,7 @@ Constructor takes a connection socket and spawns IOStreams that are used to form
 
 run() is blocking IO that attempts to read the next set of data.
 
-Data is ordered as a identifying char and a float which is a ratio describing a ratio.
+Data is ordered as a identifying char and a float which is a ratio describing a position on the screen.
 
 to find the identifying chars possible, see Constants interface class
 

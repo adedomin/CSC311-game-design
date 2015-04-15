@@ -22,7 +22,7 @@ bluetooth beacons could be placed in accurately measured locations and can broad
 The strength of this signal and the beacons transmission power can be used to determine proximity to said beacons [src](https://en.wikipedia.org/wiki/Bluetooth_low_energy#Proximity_sensing).
 If enough becaons (3) are placed in range, then a fixed point can be derived using triangulation.
 
-In areas, like building where GPS may not penetrate, these bluetooth beacons can improve accuracy or at least confirm that a client is in a building.
+In areas, like buildings where GPS may not penetrate, these bluetooth beacons can improve accuracy or at least confirm that a client is in a building.
 
 How it Works - The Protocol
 ===========================
