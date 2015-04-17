@@ -24,6 +24,8 @@ If enough becaons (3) are placed in range, then a fixed point can be derived usi
 
 In areas, like buildings where GPS may not penetrate, these bluetooth beacons can improve accuracy or at least confirm that a client is in a building.
 
+The other plus is the game could be implemented in javascript, and be servered over the web.
+
 How it Works - The Protocol
 ===========================
 
