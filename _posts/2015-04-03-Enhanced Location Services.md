@@ -31,6 +31,10 @@ Health monitoring sensor providers, like fitbit benefit from this technology.
 Many of their products are very small, so there isn't much room for a battery.
 However, bluetooth LE allows for a much [lower energy](http://www.bluetooth.com/Pages/Bluetooth-Smart.aspx) broadcasting solution.
 
+Overall, there are many players in the space, as [this list](http://www.bluetooth.com/Pages/Bluetooth-Smart-Devices-List.aspx) shows.
+It makes sense too since this technology has many [advantages](https://en.wikipedia.org/wiki/Bluetooth_low_energy#Radio_interface) over the connection oriented bluetooth of the past.
+It's the ideal technology for a smart device world where everything can be interfaced with.
+
 Game Enhancements
 ==================
 
@@ -51,7 +55,6 @@ How it Works - The Protocol
 ===========================
 
 The receiving device passively listens for these signals and then measures RSSI (received signal strength indicator).
-
 
 ### Programmatic
 
