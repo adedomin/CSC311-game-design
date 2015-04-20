@@ -11,6 +11,30 @@ To offer an even better location service, bluetooth le becaons could be used.
 Bluetooth LE allows for things like beacons which broadcast a simple signal that carries a URI and UUID.
 These beacons can allow for better location pinpointing and also allow for more interactivity with the physical world
 
+Players in the space
+=====================
+
+Google is a major player in the space as it can greatly enhance interactivity of smartdevices and the world.
+To make this a reality, google released its [PhysicalWeb](https://google.github.io/physical-web/) project.
+The idea behind physical web is that users can aproch things like bus stops and get a webpage showing the bus schedule or when the bus will arrive.
+The other enhancement is that it eliminates the need for specialized apps.
+
+Apple has also stepped in by offering their [iBeacon](ihttps://developer.apple.com/ibeacon/).
+Like the physical web, Apple suggests this can add more interactivity with the real world through smartdevices.
+Unlike Physical web however, Apple's implementation only allows for broadcasting a UUID, and 2, 2 byte, values that are implemented by the developer.
+This means that iBeacon technologies would require specialized apps to give this interactivity.
+The goal of the iBeacon overall is less ambitious.
+Apple does not recommend it to be used for location and that it is only a uni-directional broadcast; 
+users can't use ibeacon for passive communication between each other.
+
+Health monitoring sensor providers, like fitbit benefit from this technology.
+Many of their products are very small, so there isn't much room for a battery.
+However, bluetooth LE allows for a much [lower energy](http://www.bluetooth.com/Pages/Bluetooth-Smart.aspx) broadcasting solution.
+
+Overall, there are many players in the space, as [this list](http://www.bluetooth.com/Pages/Bluetooth-Smart-Devices-List.aspx) shows.
+It makes sense too since this technology has many [advantages](https://en.wikipedia.org/wiki/Bluetooth_low_energy#Radio_interface) over the connection oriented bluetooth of the past.
+It's the ideal technology for a smart device world where everything can be interfaced with.
+
 Game Enhancements
 ==================
 
@@ -25,12 +49,12 @@ If enough becaons (3) are placed in range, then a fixed point can be derived usi
 In areas, like buildings where GPS may not penetrate, these bluetooth beacons can improve accuracy or at least confirm that a client is in a building.
 
 The other plus is the game could be implemented in javascript, and be servered over the web.
+This would eliminate the need for an app altogether.
 
 How it Works - The Protocol
 ===========================
 
 The receiving device passively listens for these signals and then measures RSSI (received signal strength indicator).
-
 
 ### Programmatic
 
