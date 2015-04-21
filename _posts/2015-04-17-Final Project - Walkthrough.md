@@ -8,14 +8,14 @@ See [https://dedominic.pw/CSC311-FINAL-PROJECT-DOC/](https://dedominic.pw/CSC311
 
 It goes over what has been done in relative detail.
 
-Currently, only the UI has been worked on in good detail
+Currently, only the UI has been worked on in good detail.
 
 HTTP Services
 --------------
 
 In order to communicate with the database, The client needs a http client.
 
-To do this, first the app requres the Internet permissions (add to manifest.xml)
+To do this, first the app requires the Internet permissions (add to manifest.xml)
 	    <uses-permission android:name="android.permission.INTERNET" />
 Second, android does not allow you to do http services in a regular thread.
 So to solve this, the program needs an AsyncTask.
@@ -38,7 +38,7 @@ So argtype and ellipsis with a variable name creates an array of type argtype th
 
 To call this task, just call the execute(args) method.
 Note that once a task has run its course, you must recreate it (task = new youTask()) to execute it again.
-Now to communicate the results back to the activity, I use handlers.
+To communicate results back to an activity, simply use a handler object.
 
 Location Services
 ------------------
@@ -71,7 +71,7 @@ This app houses three views, a list view which contains all the players particip
 This activity also contains various handlers, some that are effectively timers.
 The handlers that implement a sleep(long) function are timers;
 They only serve the purpose of executing their handleMessage() code at a fixed interval.
-These timers' purpose is to execute the http client to retrieve game data.
+The purpose of these timers are to execute threaded http clients to retrieve game data.
 
 To process server obtained data, the String.split method is used.
 String split is useful to create an array of strings delimited by a regular expression.
@@ -92,7 +92,7 @@ Other than that, there is nothing non-trivial in this view.
 ==============
 
 All of these views get their data from AsyncTasks located in HttpService.
-GetCSVTask fetches the list of all users, GetMessageTask fetches the message from the desktop player for the mobile device player and UploadLocationTask which updates the user's location.
+GetCSVTask fetches the list of all users, GetMessageTask fetches the message from the desktop player for the mobile device player and UploadLocationTask which updates the user's current location.
 
 [LoginActivity](https://github.com/adedomin/CSC311-FInal-Project/blob/master/app/src/main/java/pw/dedominic/csc311_final_project/LoginActivity.java)
 ======================
@@ -109,7 +109,7 @@ Service similar to the one in BluetoothPong2 project. It's mostly for demonstrat
 Devices would listen on an insecure RFComm socket waiting for other users to connect.
 When a connect occurs, both devices should enter battle.
 RFComm insecure allows for unpaired devices to communicate, but it's unencrypted;
-this lack of encryption may be a plus when it comes to network performance.
+this lack of encryption may be a plus when it comes to network and processing performance.
 
 BattleView and BattleActivity
 ==============================
@@ -119,5 +119,4 @@ Basically the current plan is to make a game where two players are somewhat rand
 The goal would be for the players to shoot projectiles in an arc over these obstructions and try to hit the enemy.
 
 Currently, only drawing and creating a projectiles is possible, no game play or networking is implemented.
-
 
