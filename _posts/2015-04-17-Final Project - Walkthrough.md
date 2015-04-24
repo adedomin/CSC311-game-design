@@ -120,3 +120,7 @@ The goal would be for the players to shoot projectiles in an arc over these obst
 
 Currently, only drawing and creating a projectiles is possible, no game play or networking is implemented.
 
+Work Needed
+------------
+
+For the most part, only a complete gameplay element is needed + some minor things and the App portion of the game is done.
