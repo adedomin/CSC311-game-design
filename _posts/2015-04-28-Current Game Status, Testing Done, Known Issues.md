@@ -4,6 +4,12 @@ title: Current Game Status, Testing Done, Known Issues
 date: 2015-04-28 20:22:52
 ---
 
+As always, the source of the game can be found on [github](https://github.com/adedomin/CSC311-FInal-Project).
+
+Server-side scripts can be found [here](http://dedominic.pw/csc-311/php/server_side_php.tar.gz).
+
+If you can't open the tarball above, consider [7-Zip](http://www.7-zip.com) a free and open source software that can unpack gzip compressed UNIX tarballs on windows.
+
 What Has Changed
 ------------------
 
@@ -87,6 +93,12 @@ just query it and it will return a csv with values:
 Testing
 ========
 
+Walking away from a node was tested, when I was out of range the program sent a toat to player.
+
+When entering range, an appropriate message was sent using toast notification.
+
+WHen standing in a neutral node for 30 seconds, it would change to a green color indicating it was captured. Since the game state is managed by the server, I checked the table to confirm capture worked.
+
 Known Issues
 -------------
 
@@ -107,3 +119,38 @@ If the HttpURLConnect object in the HttpService.class were to fail due to any is
 The same issue is possible in uploading data;
 client does not check if it successfully conected which can lead to issues.
 User should at least know when the client can't retrieve/upload information.
+
+
+Distance Away From Goal
+-----------------------
+
+Once all the above issues are fixed, the only thing that really needs to be implemented to make it a full game is a battle element.
+I know Alex basically took my bluetooth pong game for his battle component and I could have easily done the same with minimal effort, but pong isn't a fun game.
+
+I originally left the ultimate gameplay plan to Brandon;
+I have received his component, however it didn't do much more than my current battle template.
+
+The idea of the gameplay was that player/s would be able to drop onto some 2D field with random terrain and the goal was for the players to kill each other with artillery fire.
+
+I basically had the actual firing of the projectile in the template, but no more. Brandon's seems to implement drawing player pieces and a divider.
+He had also implemented hit collision, which basically checked the distance between two circle centers and if distance was equal or less than their combined radius, hit was registered.
+
+Ultimate Status of Development
+------------------------------
+
+As of now, the project is on the verge of death.
+
+Despite how close I am to the goal, I feel the overall design is flawed.
+I feel the game is too dependent on a reachable internet server.
+Without internet, users can't capture nodes or even know of the existence of nearby players.
+I also think the use of old bluetooth foolish;
+I do not use any of the security features of RFComms and the active cost of listening on RFComms is greater than the passive nature of bluetooth LE.
+
+A recreation of the game would use bluetooth LE.
+Such technologies would allow for users to discover nearby players WITHOUT a need for a server.
+It would also allow for a lower power listening for battle challenges.
+
+Ultimately, this weekend (2015-05-02 to 2015-05-03) will be the last time I work on this project.
+The goal of the weekend would be to at least ship a complete game that implements most of the features I set out to create.
+
+Past that date, the project will be ignored.
