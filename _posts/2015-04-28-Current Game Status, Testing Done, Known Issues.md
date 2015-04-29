@@ -87,4 +87,23 @@ just query it and it will return a csv with values:
 Testing
 ========
 
+Known Issues
+-------------
 
+If user has bluetooth and location off, the program will die.
+This is a simple fix, I just haven't got around to it.
+
+If the user changes the orientation if the screen, the MainActivity recreates itself by running onDestroy() and onCreate() and may crash due to a stray null pointer exception.
+Ideal fix would be to implement a function that would gracefully handle orientation changes.
+Otherwise I would have just locked the orientation to landscape.
+
+if the data that the server returns in get node list and get users is different than expected, the program may throw a out of bounds exception.
+No checking is done in these functions and no error handling is present.
+
+last I tried the battleActivity portion of the game, the game would throw a null pointer exception when going back to MainActivity.
+No checking has done, I planned on investigating when gameplay would have been implemented (Brandon's part).
+
+If the HttpURLConnect object in the HttpService.class were to fail due to any issue the user would be left mostly unaware.
+The same issue is possible in uploading data;
+client does not check if it successfully conected which can lead to issues.
+User should at least know when the client can't retrieve/upload information.
