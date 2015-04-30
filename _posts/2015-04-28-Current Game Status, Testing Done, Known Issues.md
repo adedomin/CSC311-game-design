@@ -57,7 +57,7 @@ Removing the entry from the database caused the expect results, it launched me i
 
 I confirmed that the login activity properly uploads the information by querying the table for the entered user.
 
-The results are properly sent back since the game use to send a toast with the values added
+The results are properly sent back since the game sent a toast with the values added
 
 Node Capture
 ============
@@ -112,14 +112,13 @@ Otherwise I would have just locked the orientation to landscape.
 if the data that the server returns in get node list and get users is different than expected, the program may throw a out of bounds exception.
 No checking is done in these functions and no error handling is present.
 
-last I tried the battleActivity portion of the game, the game would throw a null pointer exception when going back to MainActivity.
+Last I tried the battleActivity portion of the game, the game would throw a null pointer exception when going back to MainActivity.
 No checking has done, I planned on investigating when gameplay would have been implemented (Brandon's part).
 
 If the HttpURLConnect object in the HttpService.class were to fail due to any issue the user would be left mostly unaware.
 The same issue is possible in uploading data;
 client does not check if it successfully conected which can lead to issues.
 User should at least know when the client can't retrieve/upload information.
-
 
 Distance Away From Goal
 -----------------------
@@ -135,22 +134,25 @@ The idea of the gameplay was that player/s would be able to drop onto some 2D fi
 I basically had the actual firing of the projectile in the template, but no more. Brandon's seems to implement drawing player pieces and a divider.
 He had also implemented hit collision, which basically checked the distance between two circle centers and if distance was equal or less than their combined radius, hit was registered.
 
+Object Relationship Model
+--------------------------
+
+A quick sketch showing how the various services and activites interact with the main activity.
+
+![Alt](http://dedominic.pw/media/001.png)
+
+
 Ultimate Status of Development
 ------------------------------
 
-As of now, the project is on the verge of death.
+As of now, the project is essentially dead.
 
 Despite how close I am to the goal, I feel the overall design is flawed.
 I feel the game is too dependent on a reachable internet server.
 Without internet, users can't capture nodes or even know of the existence of nearby players.
 I also think the use of old bluetooth foolish;
-I do not use any of the security features of RFComms and the active cost of listening on RFComms is greater than the passive nature of bluetooth LE.
+I do not use any of the security features of RFComms and the active energy cost of listening on RFComms is greater than the passive nature of bluetooth LE.
 
 A recreation of the game would use bluetooth LE.
 Such technologies would allow for users to discover nearby players WITHOUT a need for a server.
 It would also allow for a lower power listening for battle challenges.
-
-Ultimately, this weekend (2015-05-02 to 2015-05-03) will be the last time I work on this project.
-The goal of the weekend would be to at least ship a complete game that implements most of the features I set out to create.
-
-Past that date, the project will be ignored.
